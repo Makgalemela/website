@@ -47,7 +47,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 			return True
 		return False
 
-class PostCreateView(LoginRequiredMixin, CreateView ):
+class PostCreateView(LoginRequiredMixin, UserPassesTestMixin,CreateView ):
 	model = Post
 	fields = ['title', 'content']
 	# template_name = 'index/detail.html'
@@ -55,7 +55,12 @@ class PostCreateView(LoginRequiredMixin, CreateView ):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
 
-
+	def test_func(self):
+		# post = self.get_object()
+		# if self.request.user == post.author:
+		if self.request.user.username == 'admin':
+			return True
+		return False
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView ):
 	model = Post
