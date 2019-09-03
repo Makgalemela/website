@@ -46,7 +46,6 @@ class PostCreateView(LoginRequiredMixin, CreateView ):
 	model = Post
 	fields = ['title', 'content']
 	# template_name = 'index/detail.html'
-
 	def form_valid(self, form):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
@@ -61,7 +60,8 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView ):
 		return super().form_valid(form)
 	def test_func(self):
 		post = self.get_object()
-		if self.request.user == post.author:
+		# if self.request.user == post.author:
+		if self.request.user == 'admin':
 			return True
 		return False
 	
