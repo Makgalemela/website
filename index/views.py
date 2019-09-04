@@ -17,7 +17,7 @@ class PostListView(LoginRequiredMixin,ListView):
 	ordering = ['-date_posted']
 	paginate_by = 5
 
-class UserPostListView(ListView):
+class UserPostListView(LoginRequiredMixin,ListView):
 	model = Post;
 	context_object_name ='posts'
 	paginate_by = 5
