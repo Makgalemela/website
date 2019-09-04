@@ -13,24 +13,21 @@ def index(request):
 
 class PostListView(ListView):
 	model = Post;
-	template_name = 'index/index.html'
 	context_object_name ='posts'
 	ordering = ['-date_posted']
 	paginate_by = 5
 
 class UserPostListView(ListView):
 	model = Post;
-	template_name = 'index/user_post.html'
 	context_object_name ='posts'
 	paginate_by = 5
 
-	def get_query_set(self):
-		user = get_object_or_404(User, username=self.kwargs.get('username'))
-		# return Post.objects.filter(author=user).ordered_by('-date_posted')
+	def get_queryset(self):
+		self.user = get_object_or_404(User, username=self.kwargs.get('username'))
+		return Post.objects.filter(author=self.user).order_by('-date_posted')
 
 class PostDetailView(DetailView):
 	model = Post
-	template_name = 'index/detail.html'
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 	model = Post
@@ -50,7 +47,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 class PostCreateView(LoginRequiredMixin, UserPassesTestMixin,CreateView ):
 	model = Post
 	fields = ['title', 'content']
-	# template_name = 'index/detail.html'
 	def form_valid(self, form):
 		form.instance.author = self.request.user
 		return super().form_valid(form)

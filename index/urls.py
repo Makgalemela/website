@@ -6,9 +6,9 @@ from .views import UserPostListView, PostListView , PostDetailView,PostCreateVie
 
 urlpatterns = [
 
-     path('home/', PostListView.as_view() , name='index-home'),
-     path('user/<str:username>', UserPostListView.as_view() , name='index-userpost'),
-     path('post/<int:pk>/', PostDetailView.as_view() , name='index-detail'),
+     path('home/', PostListView.as_view(template_name = 'index/index.html') , name='index-home'),
+     path('user/<str:username>', UserPostListView.as_view(template_name = 'index/user_post.html') , name='index-userpost'),
+     path('post/<int:pk>/', PostDetailView.as_view(template_name='index/detail.html') , name='index-detail'),
      path('post/<int:pk>/update/', PostUpdateView.as_view() , name='index-update'),
      path('post/<int:pk>/delete/', PostDeleteView.as_view() , name='index-delete'),
      path('post/new/', PostCreateView.as_view() , name='index-create'),
